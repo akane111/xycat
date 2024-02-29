@@ -1,0 +1,47 @@
+<template>
+  <div>
+    <h1>校园猫咪地图</h1>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  mounted() {
+    this.loadAMapScript();
+  },
+  methods: {
+    loadAMapScript() {
+      const script = document.createElement('script');
+      script.src = 'https://webapi.amap.com/maps?v=1.4.15&key=11965e656f804b1e60b7b068484fc9e9';
+      document.body.appendChild(script);
+
+      script.onload = () => {
+        this.initMap();
+      };
+    },
+    initMap() {
+      var map = new AMap.Map("map", {
+        center: [104.19089, 30.832644], // 初始化地图中心点坐标
+        zoom: 16 // 设置地图级别
+      });
+
+      // 假设这是一个从后端获取的流浪猫位置数据
+      var strayCats = [
+        { lat: 30.832857, lng: 104.193716, name: '小橘' },
+        { lat: 30.834438, lng: 104.193922, name: '八嘎' },
+        // 更多流浪猫的位置...
+      ];
+
+      // 在地图上标记每只流浪猫的位置
+      strayCats.forEach(function (cat) {
+        var marker = new AMap.Marker({
+          position: [cat.lng, cat.lat],
+          title: cat.name
+        });
+        map.add(marker);
+      });
+    }
+  }
+};
+</script>
